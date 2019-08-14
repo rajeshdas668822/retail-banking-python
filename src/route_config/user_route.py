@@ -1,6 +1,7 @@
 # create Hello route
 from flask import jsonify, Blueprint, request
-from model import User
+from model.User import User
+from app_service.user_service import user_service
 
 user_page = Blueprint('users', __name__, template_folder='route_config')
 
@@ -16,13 +17,12 @@ def create_user():
     first_name = request.json['first_name']
     last_name = request.json['last_name']
     phone = request.json['phone']
-
     user = User(login_id, first_name, last_name, phone)
-    # user = users_service.save(user)
-    # return user_schema.jsonify(user)
+    user = user_service.save(user)
+    return jsonify(user)
 
 
 # Get All
-# @user_page.route('/user', methods=['GET'])
-# def get_all_user():
-#     return users_schema.jsonify(users_service.get_all())
+@user_page.route('/user', methods=['GET'])
+def get_all_user():
+    return jsonify(user_service.get_all())

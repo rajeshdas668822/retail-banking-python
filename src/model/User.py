@@ -1,3 +1,4 @@
+from app_service.base_service import  BaseService
 class User:
 
     def __init__(self, login_id, first_name, last_name, phone):
@@ -22,8 +23,8 @@ class User:
         return "'login_id' : '{}','first_name': '{}', 'last_name' : '{}' , 'phone' : '{}'  " \
             .format(self.get_login_id(), self.get_first_name(), self.get_last_name(), self.get_phone())
 
-
-# class UserSchema(app.ma.Schema):
+#
+# class UserSchema(BaseService.ma.Schema):
 #     class Meta:
 #         fields = ('user_id', 'login_id', 'first_name', 'last_name', 'phone', 'created_on', 'updated_on')
 #

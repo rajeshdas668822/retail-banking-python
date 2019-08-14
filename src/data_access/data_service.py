@@ -21,3 +21,4 @@ class DefaultDao:
 
     def get_connection(self):
         return dal.get_engine().connect()
+

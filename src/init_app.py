@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from route_config.user_route import user_page
 from app_config import config
-from app_service.user_service import UserService
+from app_service.user_service import user_service
 import os
 
 # init app
@@ -18,10 +18,12 @@ db = SQLAlchemy(app)
 # init MA
 ma = Marshmallow(app)
 
+
 app.register_blueprint(user_page)
 
 #service init
-users_service = UserService(config.conn_string)
+user_service.init_service(config.conn_string)
+#user_service.init_marshmallow(ma)
 
 # Run Server
 if __name__ == '__main__':

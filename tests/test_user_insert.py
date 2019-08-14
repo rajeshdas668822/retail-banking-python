@@ -3,14 +3,15 @@ from data_access.data_setup import dal
 from data_access.data_service import DefaultDao
 import json
 from sqlalchemy import select
-from util.CustomException import EmptyData
 from tests.data import mock_data
+import os
 
 
 @pytest.fixture()
 def default_dao():
     # conn_string = "sqlite:///C:/Users/User/PycharmProjects/market-ms/data/test.db"
-    conn_string = "sqlite:///C:/Users/User/PycharmProjects/market-ms/src/data/test.db"
+    basedir = os.path.realpath("data/test.db")
+    conn_string = "sqlite:///{}".format(basedir)
     return DefaultDao(conn_string)
 
 
