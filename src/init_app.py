@@ -13,10 +13,10 @@ config.basedir = os.path.realpath("data/test.db")
 app.config.from_object(config)
 
 # Init DB
-db = SQLAlchemy(app)
+#db = SQLAlchemy(app)
 
 # init MA
-ma = Marshmallow(app)
+#ma = Marshmallow(app)
 
 
 app.register_blueprint(user_page)

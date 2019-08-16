@@ -18,14 +18,14 @@ def default_dao():
 def test_users_insert(default_dao):
     ins = dal.users.insert();
     users = mock_data.mock_user()
-    results = default_dao.data_save(ins, users)
+    results = default_dao.save_data(ins, users)
     assert 2 == results.rowcount
 
 
 def test_customer_insert(default_dao):
     ins = dal.customers.insert()
     cust = mock_data.mock_customer()
-    results = default_dao.data_save(ins, cust)
+    results = default_dao.save_data(ins, cust)
     assert 2 == results.rowcount
     # print(json.dumps(cust))
 
@@ -33,7 +33,7 @@ def test_customer_insert(default_dao):
 def test_account_insert(default_dao):
     ins = dal.accounts.insert()
     accts = mock_data.mock_account()
-    results = default_dao.data_save(ins, accts)
+    results = default_dao.save_data(ins, accts)
     assert 6 == results.rowcount
     print(json.dumps(accts))
 

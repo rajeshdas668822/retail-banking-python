@@ -5,20 +5,33 @@ from util.CustomException import EmptyData
 # dal.db_init('sqlite:///test.db')
 class DefaultDao:
 
-    def __init__(self, conn_string):
-        self.conn_string = conn_string
-        dal.db_init(conn_string)
-
-    def data_save(self, inst, data=[]):
+    @classmethod
+    def save_data(cls, inst, data=[]):
         if data is None:
             raise EmptyData(" Data can't be empty")
         results = dal.get_engine().execute(inst, data)
         return results
 
-    def find_by_query(self, select_query):
+    @classmethod
+    def update_data(cls, update, data=[]):
+        if data is None:
+            raise EmptyData(" Data can't be empty")
+        results = dal.get_engine().execute(update, data)
+        return results
+
+    @classmethod
+    def find_by_query(cls, select_query):
         conn = dal.get_engine().connect();
         return conn.execute(select_query)
 
-    def get_connection(self):
+    @classmethod
+    def delete_data(cls, delete_query):
+        return dal.get_engine().execute(delete_query)
+
+    @classmethod
+    def get_connection(cls):
         return dal.get_engine().connect()
+
+
+
 
