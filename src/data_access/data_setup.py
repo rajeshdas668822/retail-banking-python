@@ -3,10 +3,6 @@ from sqlalchemy import Table, Column, Integer, Numeric, String, MetaData, DateTi
 from datetime import datetime
 
 
-# import sqlite3
-# conn = sqlite3.connect('test.db')
-# print ("Opened database successfully");
-
 class InitializeDataLayer:
     engine = None
     conn_string = None

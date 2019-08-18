@@ -1,37 +1,58 @@
-from data_access.data_setup import dal
 from util.CustomException import EmptyData
 
 
-# dal.db_init('sqlite:///test.db')
 class DefaultDao:
 
-    @classmethod
-    def save_data(cls, inst, data=[]):
+    def __init__(self, data_init=None):
+        self.data_init = data_init
+
+    def save_data(self, inst, data=[]):
         if data is None:
             raise EmptyData(" Data can't be empty")
-        results = dal.get_engine().execute(inst, data)
+        results = self.data_init.get_engine().execute(inst, data)
         return results
 
-    @classmethod
-    def update_data(cls, update, data=[]):
+    def update_data(self, update, data=[]):
         if data is None:
             raise EmptyData(" Data can't be empty")
-        results = dal.get_engine().execute(update, data)
+        results = self.data_init.get_engine().execute(update, data)
         return results
 
-    @classmethod
-    def find_by_query(cls, select_query):
-        conn = dal.get_engine().connect();
+    def find_by_query(self, select_query):
+        conn = self.data_init.get_engine().connect()
         return conn.execute(select_query)
 
-    @classmethod
-    def delete_data(cls, delete_query):
-        return dal.get_engine().execute(delete_query)
+    def delete_data(self, delete_query):
+        return self.data_init.get_engine().execute(delete_query)
 
-    @classmethod
-    def get_connection(cls):
-        return dal.get_engine().connect()
+    def get_connection(self):
+        return self.data_init.get_engine().connect()
 
 
+class ORMDefaultDao:
 
+    def __init__(self, session=None):
+        self.session = session
 
+    def save_data(self, inst, data=[]):
+        if data is None:
+            raise EmptyData(" Data can't be empty")
+        results = self.session.bulk_save_objects(data)
+        self.session.commit()
+        return self.session.q
+
+    def update_data(self, update, data=[]):
+        if data is None:
+            raise EmptyData(" Data can't be empty")
+        results = self.data_init.get_engine().execute(update, data)
+        return results
+
+    def find_by_query(self, select_query):
+        conn = self.data_init.get_engine().connect()
+        return conn.execute(select_query)
+
+    def delete_data(self, delete_query):
+        return self.data_init.get_engine().execute(delete_query)
+
+    def get_connection(self):
+        return self.data_init.get_engine().connect()

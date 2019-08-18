@@ -1,7 +1,7 @@
 # create Hello route
 from flask import jsonify, Blueprint, request
 from model.User import User
-from app_service.user_service import user_service
+from app_config.config import user_service
 
 user_page = Blueprint('users', __name__, template_folder='route_config')
 
