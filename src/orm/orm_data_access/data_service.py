@@ -23,7 +23,7 @@ class ORMService:
         print(dump_data)
         return dump_data
 
-    def get_by_criteria(self, entity, _filter_condition=[]):
+    def get_by_criteria(self, _filter_condition=[]):
         dynamic_filtered_query_class = DynamicFilter(self.session, query=None, model_class=User,
                                                      filter_condition=_filter_condition)
         dynamic_filtered_query = dynamic_filtered_query_class.return_query()

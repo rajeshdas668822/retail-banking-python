@@ -18,4 +18,4 @@ class OrmUserService:
 
     def get_by_login_id(self, login_id):
         param = [('login_id', 'eq', login_id)]
-        return self.orm_service.get_by_criteria(User, param)
+        return self.orm_service.get_by_criteria(param)

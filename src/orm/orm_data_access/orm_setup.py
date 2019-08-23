@@ -21,9 +21,6 @@ class OrmHelper:
         return self.session
 
 
-orm_helper = OrmHelper()
-
-
 class User(Base):
     __tablename__ = "users"
 
