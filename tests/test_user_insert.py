@@ -1,6 +1,6 @@
 import pytest
-from data_access.data_setup import dal
-from data_access.data_service import DefaultDao
+from native_sql.data_access.data_setup import dal
+from native_sql.data_access.data_service import DefaultDao
 from app_config.config import db_dir
 import json
 from sqlalchemy import select

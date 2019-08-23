@@ -1,7 +1,6 @@
-from data_access.data_setup import dal
-from model.User import User
-from model.Customer import Customer
-from model.Account import Account
+from native_sql.model import User
+from native_sql.model import Customer
+from native_sql.model.Account import Account
 from util.random_generator_util import get_generated_number
 
 import json

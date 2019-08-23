@@ -1,5 +1,5 @@
 import pytest
-from model.User import User
+from native_sql.model import User
 
 
 @pytest.fixture()

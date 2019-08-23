@@ -1,5 +1,6 @@
 from marshmallow_sqlalchemy import ModelSchema
-from data_access.default_orm_service import User, Account, Customer
+
+from orm.orm_data_access.orm_setup import User, Account, Customer
 
 
 class UserSchema(ModelSchema):

@@ -1,5 +1,5 @@
 import pytest
-from model.Account import Account
+from native_sql.model.Account import Account
 from util.CustomException import InsufficientBalance
 
 

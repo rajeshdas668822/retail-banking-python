@@ -1,6 +1,6 @@
 # create Hello route
 from flask import jsonify, Blueprint, request
-from model.User import User
+from orm.orm_data_access.orm_setup import User
 from app_config.config import user_service
 
 user_page = Blueprint('users', __name__, template_folder='route_config')
@@ -13,7 +13,6 @@ def say_hello():
 
 @user_page.route('/user', methods=['POST'])
 def create_user():
-    print(request.json())
     login_id = request.json['login_id']
     first_name = request.json['first_name']
     last_name = request.json['last_name']
@@ -45,4 +44,11 @@ def delete_user(user_id):
 @user_page.route('/user', methods=['GET'])
 def get_all_user():
     results = user_service.get_all()
+    return jsonify(results)
+
+
+# Get All
+@user_page.route('/user/<login_id>', methods=['GET'])
+def get_user_by_login_id(login_id):
+    results = user_service.get_by_login_id(login_id)
     return jsonify(results)

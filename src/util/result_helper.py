@@ -1,6 +1,3 @@
-from model.User import users_schema, user_schema
-
-
 class ResultHelper:
 
     @classmethod
