@@ -40,6 +40,13 @@ def delete_user(user_id):
     return jsonify(" User  with Id {} deleted Successfully".format(user_id))
 
 
+@user_page.route('/user/<first_name>', methods=['DELETE'])
+def delete_user_by_criteria(first_name):
+    param = [('first_name', 'eq', first_name)]
+    user_service.delete_by_criteria(param)
+    return jsonify(" User  with first {} deleted Successfully".format(first_name))
+
+
 # Get All
 @user_page.route('/user', methods=['GET'])
 def get_all_user():
@@ -47,8 +54,10 @@ def get_all_user():
     return jsonify(results)
 
 
-# Get All
+# Get by login Id
 @user_page.route('/user/<login_id>', methods=['GET'])
 def get_user_by_login_id(login_id):
     results = user_service.get_by_login_id(login_id)
     return jsonify(results)
+
+

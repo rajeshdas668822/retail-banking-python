@@ -7,7 +7,7 @@ from orm.app_service.user_service import OrmUserService
 
 # from flask_marshmallow import Marshmallow
 
-db_dir = "C:/Python-BuildArea/retail-banking-python/data/test.db"
+db_dir = "C:/Python-BuildArea/retail-banking-python/db/test.db"
 
 # Data Base
 conn_string = "sqlite:///{}".format(db_dir)
