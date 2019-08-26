@@ -1,4 +1,4 @@
-from util.CustomException import InsufficientBalance
+from util.custom_exception import InsufficientBalance
 
 
 class Account:

@@ -4,7 +4,7 @@ from native_sql.data_access.data_service import DefaultDao
 from app_config.config import db_dir
 import json
 from sqlalchemy import select
-from tests.data import mock_data
+from tests.data import native_sql_mock_data
 import os
 
 
@@ -23,14 +23,14 @@ def test_os_test():
 
 def test_users_insert(default_dao):
     ins = dal.users.insert();
-    users = mock_data.mock_user()
+    users = native_sql_mock_data.mock_user()
     results = DefaultDao.save_data(ins, users)
     assert 2 == results.rowcount
 
 
 def test_customer_insert(default_dao):
     ins = dal.customers.insert()
-    cust = mock_data.mock_customer()
+    cust = native_sql_mock_data.mock_customer()
     results = DefaultDao.save_data(ins, cust)
     assert 2 == results.rowcount
     # print(json.dumps(cust))
@@ -38,7 +38,7 @@ def test_customer_insert(default_dao):
 
 def test_account_insert(default_dao):
     ins = dal.accounts.insert()
-    accts = mock_data.mock_account()
+    accts = native_sql_mock_data.mock_account()
     results = DefaultDao.save_data(ins, accts)
     assert 6 == results.rowcount
     print(json.dumps(accts))

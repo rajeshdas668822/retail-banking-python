@@ -1,4 +1,4 @@
-from util.CustomException import EmptyData
+from util.custom_exception import EmptyData
 
 
 class DefaultDao:

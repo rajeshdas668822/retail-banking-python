@@ -1,6 +1,6 @@
 import pytest
 from native_sql.model.Account import Account
-from util.CustomException import InsufficientBalance
+from util.custom_exception import InsufficientBalance
 
 
 @pytest.fixture()
