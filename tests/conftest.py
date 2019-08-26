@@ -8,7 +8,7 @@ def session():
     orm_helper = OrmHelper()
     orm_helper.db_init(conn_string)
     db_session = orm_helper.get_session()
-
+    print(" Session Called ..............")
     yield db_session
     db_session.commit()
     db_session.close()

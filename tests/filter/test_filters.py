@@ -58,7 +58,7 @@ class TestFilterNotApplied:
         assert expected_error == err.value.args[0]
 
 
-    @pytest.mark.usefixtures('multiple_users_inserted')
+    #@pytest.mark.usefixtures('multiple_users_inserted')
     def test_no_operator_provided(self, session):
         query = session.query(User)
         filters = [{'field': 'login_id', 'value': 'rdas'}]
