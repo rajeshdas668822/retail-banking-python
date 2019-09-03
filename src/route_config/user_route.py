@@ -2,6 +2,7 @@
 from flask import jsonify, Blueprint, request
 from orm.orm_data_access.models import User
 from app_config.config import user_service
+from  random import randrange
 
 user_page = Blueprint('users', __name__, template_folder='route_config')
 
@@ -12,7 +13,8 @@ def create_user():
     first_name = request.json['first_name']
     last_name = request.json['last_name']
     phone = request.json['phone']
-    user = User(login_id, first_name, last_name, phone)
+    user_id=randrange(1, 100)
+    user = User(login_id, first_name, last_name, phone,user_id)
     user = user_service.save(user)
     return jsonify(user)
 
