@@ -4,7 +4,6 @@ from orm.orm_data_access.orm_setup import OrmHelper
 from sqlalchemy_utils import create_database, drop_database, database_exists
 from orm.orm_data_access.models import Base
 
-
 SQLITE_TEST_DB_URI = 'SQLITE_TEST_DB_URI'
 MYSQL_TEST_DB_URI = 'MYSQL_TEST_DB_URI'
 POSTGRESQL_TEST_DB_URI = 'POSTGRESQL_TEST_DB_URI'
@@ -22,6 +21,7 @@ def pytest_addoption(parser):
         )
     )
 
+
 @pytest.fixture(scope='session')
 def config(request):
     # return {
@@ -29,8 +29,8 @@ def config(request):
     #     MYSQL_TEST_DB_URI: request.config.getoption(MYSQL_TEST_DB_URI),
     #     POSTGRESQL_TEST_DB_URI: request.config.getoption(POSTGRESQL_TEST_DB_URI),
     # }
-    return { SQLITE_TEST_DB_URI : "sqlite:///test_sqlalchemy_filters.db"
-    }
+    return {SQLITE_TEST_DB_URI: "sqlite:///C:/Python-BuildArea/testdb/test_sqlalchemy_filters.db"
+            }
 
 
 def test_db_keys():
@@ -84,7 +84,6 @@ def db_engine_options(db_uri, is_postgresql):
     return {}
 
 
-
 @pytest.fixture()
 def session(db_uri, db_engine_options):
     orm_helper = OrmHelper()
@@ -101,6 +100,7 @@ def session(db_uri, db_engine_options):
 
 
 
+
 def create_db(uri):
     """Drop the database at ``uri`` and create a brand new one. """
     destroy_database(uri)
@@ -111,6 +111,3 @@ def destroy_database(uri):
     """Destroy the database at ``uri``, if it exists. """
     if database_exists(uri):
         drop_database(uri)
-
-
-

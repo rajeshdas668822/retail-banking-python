@@ -1,5 +1,6 @@
 from orm.orm_data_access.models import User
 from orm.model.model_schema import UserSchema
+from orm.orm_data_access.orm_filter_util import FilterSpecification
 
 
 class OrmUserService:
@@ -20,11 +21,20 @@ class OrmUserService:
         dump_data = self.users_schema.dump(results).data
         return dump_data
 
+    # def get_by_login_id(self, login_id):
+    #     param = [('login_id', 'eq', login_id)]
+    #     results = self.orm_service.get_by_criteria(User, param)
+    #     dump_data = self.users_schema.dump(results).data
+    #     return dump_data
+
     def get_by_login_id(self, login_id):
-        param = [('login_id', 'eq', login_id)]
-        results = self.orm_service.get_by_criteria(User, param)
+        filters = [{'field': 'login_id', 'op': '==', 'value': login_id}]
+        filter_spec = FilterSpecification(filters,[])
+        results = self.orm_service.get_by_filter_spec_criteria(User, filter_spec)
         dump_data = self.users_schema.dump(results).data
         return dump_data
+
+
 
     def get_by_user_id(self, user_id):
         param = [('user_id', 'eq', user_id)]

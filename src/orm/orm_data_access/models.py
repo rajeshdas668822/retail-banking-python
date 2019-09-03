@@ -1,6 +1,8 @@
 from datetime import datetime
+from uuid import uuid4
 
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Numeric
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Numeric, Sequence
+from sqlalchemy.schema import CreateSequence
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -16,22 +18,22 @@ Base = declarative_base(cls=Base)
 class User(Base):
     __tablename__ = "users"
 
-    user_id = Column(Integer, autoincrement=True, nullable=False)
-    login_id = Column(String(50), index=True, primary_key=True)
+    # user_id_seq = CreateSequence('user_id_seq')
+
+    # user_id = Column(Integer, primary_key=True,default=lambda: uuid4().hex)
+    user_id = Column(Integer, Sequence('user_id_seq', start=1, increment=2), primary_key=True, )
+    login_id = Column(String(50), index=True, unique=True)
     first_name = Column(String(50))
     last_name = Column(String(50))
     phone = Column(String(50))
-
-    # created_on = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
-    # updated_on = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
 
     def __init__(self, login_id, first_name, last_name, phone, user_id=None):
         self.login_id = login_id
         self.first_name = first_name
         self.last_name = last_name
         self.phone = phone
-        if self.user_id is not None:
-            self.user_id = self.user_id
+        if user_id is not None:
+            self.user_id = user_id
 
     def __repr__(self):
         return "<User(name={self.first_name!r})>".format(self=self)
@@ -53,8 +55,8 @@ class Customer(Base):
     updated_user = relationship("User", foreign_keys=updated_by)
 
     def __init__(self, customer_id, id_type, customer_ref, personal_id, email, user_id):
-        if self.customer_id is not None:
-            self.customer_id = self.customer_id
+        if customer_id is not None:
+            self.customer_id = customer_id
         self.id_type = id_type
         self.customer_ref = customer_ref
         self.personal_id = personal_id
@@ -83,8 +85,8 @@ class Account(Base):
     updated_user = relationship("User", foreign_keys=updated_by)
 
     def __init__(self, account_id, account_number, name, account_type, balance, customer_ref, user_id):
-        if self.account_id is not None:
-            self.account_id = self.account_id
+        if account_id is not None:
+            self.account_id = account_id
         self.customer_ref = customer_ref
         self.name = name
         self.account_number = account_number

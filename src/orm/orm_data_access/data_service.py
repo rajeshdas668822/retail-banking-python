@@ -1,5 +1,6 @@
 from orm.orm_data_access.orm_filter_util import DynamicFilter
 from orm.orm_data_access.models import User
+from orm.filter import filters,sorting
 
 
 class ORMService:
@@ -29,3 +30,9 @@ class ORMService:
         for user in users:
             self.session.delete(user)
         self.session.commit()
+
+    def get_by_filter_spec_criteria(self, entity, filter_spec):
+        query = self.session.query(User)
+        query = filters.apply_filters(query,filter_spec.get_filters(),True)
+        query = sorting.apply_sort(query,filter_spec.get_order_by())
+        return query.all()

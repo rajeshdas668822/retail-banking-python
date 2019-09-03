@@ -4,8 +4,8 @@ from util.random_generator_util import get_generated_number
 
 def mock_user():
     users = []
-    user = User("rdas", "Rajesh", "Das", "+65-94592685", "1")
-    user1 = User('pMallick', "Pabitra", 'Mallick', "+65-81384196", "2")
+    user = User("rdas", "Rajesh", "Das", "+65-94592685", 1)
+    user1 = User('pMallick', "Pabitra", 'Mallick', "+65-81384196", 2)
     users.append(user)
     users.append(user1)
     return users

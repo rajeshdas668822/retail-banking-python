@@ -31,3 +31,15 @@ class InvalidPage(Exception):
 
 class BadFilterFormat(Exception):
     pass
+
+
+class BadSortFormat(Exception):
+    pass
+
+
+class InvalidPage(Exception):
+    pass
+
+
+def error_value(exception):
+    return exception.value.args[0]

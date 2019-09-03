@@ -64,3 +64,18 @@ class DynamicFilter:
 
     def return_query(self):
         return self.filter_query(self.get_query(), self.filter_condition)
+
+
+class FilterSpecification:
+    filters = None
+    order_by = None
+
+    def __init__(self, filters, order_by=[]):
+        self.filters = filters
+        self.order_by = order_by
+
+    def get_filters(self):
+        return self.filters
+
+    def get_order_by(self):
+        return self.order_by

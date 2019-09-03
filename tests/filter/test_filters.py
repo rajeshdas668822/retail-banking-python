@@ -10,7 +10,7 @@ from util.custom_exception import (
     BadFilterFormat, BadSpec, FieldNotFound
 )
 from orm.model.model_schema import User, Account, Customer
-from tests.data.orm_mock_data import mock_account,mock_customer,mock_user
+from tests.data.orm_mock_data import mock_account, mock_customer, mock_user
 
 
 @pytest.fixture
@@ -27,18 +27,16 @@ def multiple_customer_inserted(session, multiple_users_inserted):
     session.commit()
 
 
-
 @pytest.fixture
-def multiple_account_inserted(session, multiple_users_inserted,multiple_customer_inserted):
+def multiple_account_inserted(session, multiple_users_inserted, multiple_customer_inserted):
     accounts = mock_account()
     session.add_all(accounts)
     session.commit()
 
 
-
 class TestFilterNotApplied:
 
-    def test_no_filters_provided(self,session):
+    def test_no_filters_provided(self, session):
         query = session.query(User)
         filters = []
         filtered_query = apply_filters(query, filters)
@@ -57,7 +55,6 @@ class TestFilterNotApplied:
         )
         assert expected_error == err.value.args[0]
 
-
     @pytest.mark.usefixtures('multiple_users_inserted')
     def test_no_operator_provided(self, session):
         query = session.query(User)
@@ -67,8 +64,8 @@ class TestFilterNotApplied:
         result = filtered_query.all()
 
         assert len(result) == 1
-        #assert result[0].id == 1
-        #assert result[1].id == 3
+        # assert result[0].id == 1
+        # assert result[1].id == 3
 
     def test_no_field_provided(self, session):
         query = session.query(User)
@@ -123,122 +120,122 @@ class TestFilterNotApplied:
         assert expected_error == err.value.args[0]
 
 
-# class TestMultipleModels:
-#
-#     # TODO: multi-model should be tested for each filter type
-#     @pytest.mark.usefixtures('multiple_bars_inserted')
-#     @pytest.mark.usefixtures('multiple_quxs_inserted')
-#     def test_multiple_models(self, session):
-#         query = session.query(Bar, Qux)
-#         filters = [
-#             {'model': 'Bar', 'field': 'name', 'op': '==', 'value': 'name_1'},
-#             {'model': 'Qux', 'field': 'name', 'op': '==', 'value': 'name_1'},
-#         ]
-#
-#         filtered_query = apply_filters(query, filters)
-#         result = filtered_query.all()
-#
-#         assert len(result) == 4
-#         bars, quxs = zip(*result)
-#         assert set(map(type, bars)) == {Bar}
-#         assert {bar.id for bar in bars} == {1, 3}
-#         assert {bar.name for bar in bars} == {"name_1"}
-#         assert set(map(type, quxs)) == {Qux}
-#         assert {qux.id for qux in quxs} == {1, 3}
-#         assert {qux.name for qux in quxs} == {"name_1"}
-#
-#
-# class TestAutoJoin:
-#
-#     @pytest.mark.usefixtures('multiple_foos_inserted')
-#     def test_auto_join(self, session):
-#
-#         query = session.query(Foo)
-#         filters = [
-#             {'field': 'name', 'op': '==', 'value': 'name_1'},
-#             {'model': 'Bar', 'field': 'count', 'op': 'is_null'},
-#         ]
-#
-#         filtered_query = apply_filters(query, filters)
-#         result = filtered_query.all()
-#
-#         assert len(result) == 1
-#         assert result[0].id == 3
-#         assert result[0].bar_id == 3
-#         assert result[0].bar.count is None
-#
-#     @pytest.mark.usefixtures('multiple_foos_inserted')
-#     def test_do_not_auto_join(self, session):
-#
-#         query = session.query(Foo)
-#         filters = [
-#             {'field': 'name', 'op': '==', 'value': 'name_1'},
-#             {'model': 'Bar', 'field': 'count', 'op': 'is_null'},
-#         ]
-#
-#         with pytest.raises(BadSpec) as exc:
-#             apply_filters(query, filters, do_auto_join=False)
-#
-#         assert 'The query does not contain model `Bar`' in str(exc)
-#
-#     @pytest.mark.usefixtures('multiple_foos_inserted')
-#     def test_noop_if_query_contains_named_models(self, session):
-#
-#         query = session.query(Foo).join(Bar)
-#         filters = [
-#             {'model': 'Foo', 'field': 'name', 'op': '==', 'value': 'name_1'},
-#             {'model': 'Bar', 'field': 'count', 'op': 'is_null'},
-#         ]
-#
-#         filtered_query = apply_filters(query, filters)
-#         result = filtered_query.all()
-#
-#         assert len(result) == 1
-#         assert result[0].id == 3
-#         assert result[0].bar_id == 3
-#         assert result[0].bar.count is None
-#
-#     @pytest.mark.usefixtures('multiple_foos_inserted')
-#     def test_auto_join_to_invalid_model(self, session):
-#
-#         query = session.query(Foo)
-#         filters = [
-#             {'field': 'name', 'op': '==', 'value': 'name_1'},
-#             {'model': 'Bar', 'field': 'count', 'op': 'is_null'},
-#             {'model': 'Qux', 'field': 'created_at', 'op': 'is_not_null'}
-#         ]
-#         with pytest.raises(BadSpec) as err:
-#             apply_filters(query, filters)
-#
-#         assert 'The query does not contain model `Qux`.' == err.value.args[0]
-#
-#     @pytest.mark.usefixtures('multiple_foos_inserted')
-#     def test_ambiguous_query(self, session):
-#
-#         query = session.query(Foo).join(Bar)
-#         filters = [
-#             {'field': 'name', 'op': '==', 'value': 'name_1'},  # ambiguous
-#             {'model': 'Bar', 'field': 'count', 'op': 'is_null'},
-#         ]
-#         with pytest.raises(BadSpec) as err:
-#             apply_filters(query, filters)
-#
-#         assert 'Ambiguous spec. Please specify a model.' == err.value.args[0]
-#
-#     @pytest.mark.usefixtures('multiple_foos_inserted')
-#     def test_eager_load(self, session):
-#
-#         # behaves as if the joinedload wasn't present
-#         query = session.query(Foo).options(joinedload(Foo.bar))
-#         filters = [
-#             {'field': 'name', 'op': '==', 'value': 'name_1'},
-#             {'model': 'Bar', 'field': 'count', 'op': 'is_null'},
-#         ]
-#
-#         filtered_query = apply_filters(query, filters)
-#         result = filtered_query.all()
-#
-#         assert len(result) == 1
-#         assert result[0].id == 3
-#         assert result[0].bar_id == 3
-#         assert result[0].bar.count is None
+class TestMultipleModels:
+
+    # TODO: multi-model should be tested for each filter type
+    @pytest.mark.usefixtures('multiple_users_inserted')
+    @pytest.mark.usefixtures('multiple_customer_inserted')
+    @pytest.mark.usefixtures('multiple_account_inserted')
+    def test_multiple_models(self, session):
+        query = session.query(Customer, Account)
+        filters = [
+            {'model': 'Customer', 'field': 'customer_ref', 'op': '==', 'value': 'CUST-OBW-505431'},
+            {'model': 'Account', 'field': 'customer_ref', 'op': '==', 'value': 'CUST-OBW-505431'},
+        ]
+
+        filtered_query = apply_filters(query, filters)
+        result = filtered_query.all()
+
+        assert len(result) == 3
+        customers, accounts = zip(*result)
+        assert set(map(type, customers)) == {Customer}
+        assert {cus.customer_id for cus in customers} == {1}
+        assert {cus.customer_ref for cus in customers} == {"CUST-OBW-505431"}
+        assert set(map(type, accounts)) == {Account}
+        assert {acct.account_id for acct in accounts} == {1, 2, 3}
+        assert {acct.customer_ref for acct in accounts} == {"CUST-OBW-505431"}
+
+
+class TestAutoJoin:
+    @pytest.mark.usefixtures('multiple_customer_inserted')
+    @pytest.mark.usefixtures('multiple_account_inserted')
+    def test_auto_join(self, session):
+        query = session.query(Customer)
+        filters = [
+            {'field': 'customer_ref', 'op': '==', 'value': 'CUST-OBW-505431'},
+            {'model': 'Account', 'field': 'account_number', 'op': 'is_not_null'},
+        ]
+
+        filtered_query = apply_filters(query, filters)
+        result = filtered_query.all()
+
+        assert len(result) == 1
+        assert result[0].personal_id == 'G5874880W'
+        assert result[0].updated_user is not None
+        assert result[0].updated_user.user_id == 1
+
+    @pytest.mark.usefixtures('multiple_customer_inserted')
+    @pytest.mark.usefixtures('multiple_account_inserted')
+    def test_do_not_auto_join(self, session):
+        query = session.query(Customer)
+        filters = [
+            {'field': 'customer_ref', 'op': '==', 'value': 'CUST-OBW-505431'},
+            {'model': 'User', 'field': 'created_by', 'op': 'is_not_null'},
+        ]
+
+        with pytest.raises(BadSpec) as exc:
+            apply_filters(query, filters, do_auto_join=False)
+
+    #  assert 'The query does not contain model `User`' in str(exc)
+
+    @pytest.mark.usefixtures('multiple_customer_inserted')
+    @pytest.mark.usefixtures('multiple_account_inserted')
+    def test_noop_if_query_contains_named_models(self, session):
+        query = session.query(Customer).join(Account)
+        filters = [
+            {'model': 'Customer', 'field': 'customer_ref', 'op': '==', 'value': 'CUST-OBW-505431'},
+            {'model': 'Account', 'field': 'account_number', 'op': 'is_not_null'},
+        ]
+
+        filtered_query = apply_filters(query, filters)
+        result = filtered_query.all()
+
+        assert len(result) == 1
+        assert result[0].customer_id == 1
+        assert result[0].created_by == 1
+        # assert result[0].bar.count is None
+
+    # @pytest.mark.usefixtures('multiple_customer_inserted')
+    # def test_auto_join_to_invalid_model(self, session):
+    #
+    #     query = session.query(Customer)
+    #     filters = [
+    #         {'field': 'customer_ref', 'op': '==', 'value': 'CUST-OBW-505431'},
+    #         {'model': 'Account', 'field': 'account_number', 'op': 'is_not_null'},
+    #         {'model': 'User', 'field': 'created_at', 'op': 'is_not_null'}
+    #     ]
+    #     with pytest.raises(BadSpec) as err:
+    #         apply_filters(query, filters)
+    #
+    #     assert 'The query does not contain model `User`.' == err.value.args[0]
+    #
+    # @pytest.mark.usefixtures('multiple_customer_inserted')
+    # def test_ambiguous_query(self, session):
+    #
+    #     query = session.query(Customer).join(Account)
+    #     filters = [
+    #         {'field': 'customer_ref', 'op': '==', 'value': 'CUST-OBW-505431'},  # ambiguous
+    #         {'model': 'Account', 'field': 'account_number', 'op': 'is_null'},
+    #     ]
+    #     with pytest.raises(BadSpec) as err:
+    #         apply_filters(query, filters)
+    #
+    #     assert 'Ambiguous spec. Please specify a model.' == err.value.args[0]
+    #
+    @pytest.mark.usefixtures('multiple_customer_inserted')
+    @pytest.mark.usefixtures('multiple_account_inserted')
+    def test_eager_load(self, session):
+        # behaves as if the joinedload wasn't present
+        query = session.query(Account).options(joinedload(Account.customer))
+        filters = [
+            {'field': 'customer_ref', 'op': '==', 'value': 'CUST-OBW-505431'},
+            {'model': 'Account', 'field': 'account_number', 'op': 'is_not_null'},
+        ]
+
+        filtered_query = apply_filters(query, filters)
+        result = filtered_query.all()
+
+        assert len(result) == 3
+        # assert result[0].id == 3
+        # assert result[0].bar_id == 3
+        # assert result[0].bar.count is None
