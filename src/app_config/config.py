@@ -20,6 +20,7 @@ if not orm_enabled:
     dal.db_init(conn_string)
     default_dao = DefaultDao(dal)
     # service init
+
     user_service = UserService(default_dao)
 else:
     orm_layer = OrmHelper()
