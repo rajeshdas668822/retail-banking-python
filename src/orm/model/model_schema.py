@@ -1,19 +1,19 @@
-from marshmallow_sqlalchemy import ModelSchema
+from app_config import ma
 
 
 from orm.orm_data_access.models import User, Account, Customer
 
 
-class UserSchema(ModelSchema):
+class UserSchema(ma.ModelSchema):
     class Meta:
         model = User
 
 
-class AccountSchema(ModelSchema):
+class AccountSchema(ma.ModelSchema):
     class Meta:
         model = Account
 
 
-class CustomerSchema(ModelSchema):
+class CustomerSchema(ma.ModelSchema):
     class Meta:
         model = Customer

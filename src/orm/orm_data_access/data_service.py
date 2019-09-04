@@ -1,12 +1,14 @@
 from orm.orm_data_access.orm_filter_util import DynamicFilter
 from orm.orm_data_access.models import User
-from orm.filter import filters,sorting
+from orm.filter import filters, sorting
+from app_config import db
 
 
-class ORMService:
+class DaoService:
+    session = None
 
-    def __init__(self, session):
-        self.session = session
+    def __init__(self):
+        self.session = db.session
 
     def save(self, data):
         self.session.add(data)
@@ -33,6 +35,9 @@ class ORMService:
 
     def get_by_filter_spec_criteria(self, entity, filter_spec):
         query = self.session.query(User)
-        query = filters.apply_filters(query,filter_spec.get_filters(),True)
-        query = sorting.apply_sort(query,filter_spec.get_order_by())
+        query = filters.apply_filters(query, filter_spec.get_filters(), True)
+        query = sorting.apply_sort(query, filter_spec.get_order_by())
         return query.all()
+
+
+dao_service = DaoService()

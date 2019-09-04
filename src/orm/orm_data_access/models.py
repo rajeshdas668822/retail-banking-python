@@ -1,18 +1,10 @@
 from datetime import datetime
-from uuid import uuid4
-
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Numeric, Sequence
-from sqlalchemy.schema import CreateSequence
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from app_config import db
 
 
-class Base(object):
-    created_on = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
-    updated_on = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
-
-
-Base = declarative_base(cls=Base)
+class Base(db.Model):
+    created_on = db.Column(db.DateTime, default=datetime.now(), onupdate=datetime.now())
+    updated_on = db.Column(db.DateTime, default=datetime.now(), onupdate=datetime.now())
 
 
 class User(Base):
@@ -21,11 +13,11 @@ class User(Base):
     # user_id_seq = CreateSequence('user_id_seq')
 
     # user_id = Column(Integer, primary_key=True,default=lambda: uuid4().hex)
-    user_id = Column(Integer, Sequence('user_id_seq', start=1, increment=2), primary_key=True, )
-    login_id = Column(String(50), index=True, unique=True)
-    first_name = Column(String(50))
-    last_name = Column(String(50))
-    phone = Column(String(50))
+    user_id = db.Column(db.Integer, primary_key=True)
+    login_id = db.Column(db.String(50), index=True, unique=True)
+    first_name = db.Column(db.String(50))
+    last_name = db.Column(db.String(50))
+    phone = db.Column(db.String(50))
 
     def __init__(self, login_id, first_name, last_name, phone, user_id=None):
         self.login_id = login_id
@@ -41,18 +33,18 @@ class User(Base):
 
 class Customer(Base):
     __tablename__ = "customers"
-    customer_id = Column(Integer, autoincrement=True, nullable=False)
-    id_type = Column(String(10))
-    customer_ref = Column(String(50), primary_key=True)
-    personal_id = Column(String(50))
-    email = Column(String(50))
-    created_by = Column(Integer, ForeignKey('users.user_id'))
-    updated_by = Column(Integer, ForeignKey('users.user_id'))
+    customer_id = db.Column(db.Integer, autoincrement=True, nullable=False)
+    id_type = db.Column(db.String(10))
+    customer_ref = db.Column(db.String(50), primary_key=True)
+    personal_id = db.Column(db.String(50))
+    email = db.Column(db.String(50))
+    created_by = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    updated_by = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     # created_on = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
     # updated_on = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
 
-    created_user = relationship("User", foreign_keys=created_by)
-    updated_user = relationship("User", foreign_keys=updated_by)
+    created_user = db.relationship("User", foreign_keys=created_by)
+    updated_user = db.relationship("User", foreign_keys=updated_by)
 
     def __init__(self, customer_id, id_type, customer_ref, personal_id, email, user_id):
         if customer_id is not None:
@@ -70,19 +62,19 @@ class Customer(Base):
 
 class Account(Base):
     __tablename__ = "account"
-    account_id = Column(Integer, autoincrement=True, nullable=False)
-    account_number = Column(String(50), index=True, primary_key=True)
-    name = Column(String(50))
-    account_type = Column(String(50))
-    balance = Column(Numeric(10, 2))
-    customer_ref = Column(String(50), ForeignKey('customers.customer_ref'))
-    created_by = Column(Integer, ForeignKey('users.user_id'))
-    updated_by = Column(Integer, ForeignKey('users.user_id'))
+    account_id = db.Column(db.Integer, autoincrement=True, nullable=False)
+    account_number = db.Column(db.String(50), index=True, primary_key=True)
+    name = db.Column(db.String(50))
+    account_type = db.Column(db.String(50))
+    balance = db.Column(db.Numeric(10, 2))
+    customer_ref = db.Column(db.String(50), db.ForeignKey('customers.customer_ref'))
+    created_by = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    updated_by = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     # created_on = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
     # updated_on = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
-    customer = relationship("Customer", foreign_keys=customer_ref)
-    created_user = relationship("User", foreign_keys=created_by)
-    updated_user = relationship("User", foreign_keys=updated_by)
+    customer = db.relationship("Customer", foreign_keys=customer_ref)
+    created_user = db.relationship("User", foreign_keys=created_by)
+    updated_user = db.relationship("User", foreign_keys=updated_by)
 
     def __init__(self, account_id, account_number, name, account_type, balance, customer_ref, user_id):
         if account_id is not None:

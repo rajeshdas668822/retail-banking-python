@@ -1,7 +1,7 @@
 # create Hello route
 from flask import jsonify, Blueprint, request
 from orm.orm_data_access.models import User
-from app_config.config import user_service
+from orm.app_service.user_service import user_service
 from  random import randrange
 
 user_page = Blueprint('users', __name__, template_folder='route_config')
