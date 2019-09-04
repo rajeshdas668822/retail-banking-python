@@ -1,8 +1,6 @@
 from datetime import datetime
-from uuid import uuid4
 
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Numeric, Sequence
-from sqlalchemy.schema import CreateSequence
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Numeric
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -17,11 +15,7 @@ Base = declarative_base(cls=Base)
 
 class User(Base):
     __tablename__ = "users"
-
-    # user_id_seq = CreateSequence('user_id_seq')
-
-    # user_id = Column(Integer, primary_key=True,default=lambda: uuid4().hex)
-    user_id = Column(Integer, Sequence('user_id_seq', start=1, increment=2), primary_key=True, )
+    user_id = Column(Integer, primary_key=True, autoincrement=True)
     login_id = Column(String(50), index=True, unique=True)
     first_name = Column(String(50))
     last_name = Column(String(50))
@@ -48,8 +42,6 @@ class Customer(Base):
     email = Column(String(50))
     created_by = Column(Integer, ForeignKey('users.user_id'))
     updated_by = Column(Integer, ForeignKey('users.user_id'))
-    # created_on = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
-    # updated_on = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
 
     created_user = relationship("User", foreign_keys=created_by)
     updated_user = relationship("User", foreign_keys=updated_by)
@@ -78,8 +70,6 @@ class Account(Base):
     customer_ref = Column(String(50), ForeignKey('customers.customer_ref'))
     created_by = Column(Integer, ForeignKey('users.user_id'))
     updated_by = Column(Integer, ForeignKey('users.user_id'))
-    # created_on = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
-    # updated_on = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
     customer = relationship("Customer", foreign_keys=customer_ref)
     created_user = relationship("User", foreign_keys=created_by)
     updated_user = relationship("User", foreign_keys=updated_by)
